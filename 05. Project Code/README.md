@@ -1,3 +1,0 @@
-# V. Project Code
-
-<hr>

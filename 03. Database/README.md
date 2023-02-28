@@ -1,4 +1,0 @@
-# III. Database
-
-<hr>
-
