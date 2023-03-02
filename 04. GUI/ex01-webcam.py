@@ -19,7 +19,12 @@ def resource_path(relative_path):
 # Email
 form_2 = resource_path('ex02_email.ui')
 form_email = uic.loadUiType(form_2)[0]
-
+# DataBase
+form_3 = resource_path('ex03_db.ui')
+form_db = uic.loadUiType(form_3)[0]
+# bi
+form_4 = resource_path('ex04_bi.ui')
+form_bi = uic.loadUiType(form_4)[0]
 
 class Ui_MainWindow(QMainWindow):
     def setupUi(self, MainWindow):
@@ -46,6 +51,8 @@ class Ui_MainWindow(QMainWindow):
         font.setFamily("Yu Gothic UI Semilight")
         font.setBold(False)
         font.setWeight(50)
+
+        '''웹캠 동작 클릭 이벤트'''
         self.pushButton_cctv_on.setFont(font)
         self.pushButton_cctv_on.setMouseTracking(False)
         self.pushButton_cctv_on.setAutoDefault(False)
@@ -59,6 +66,8 @@ class Ui_MainWindow(QMainWindow):
         font.setFamily("Yu Gothic UI Semilight")
         font.setBold(False)
         font.setWeight(50)
+
+        '''웹캠 종료 클릭 이벤트'''
         self.pushButton_cctv_off.setFont(font)
         self.pushButton_cctv_off.setObjectName("pushButton_cctv_off")
         self.pushButton_cctv_off.clicked.connect(self.live_webcam_click_off) # 웹캠 종료시키는 클릭 이벤트 처리 연결(디바이스 자체의 카메라가 꺼지진 않음 = 웹캠 불 들어옴)
@@ -125,7 +134,7 @@ class Ui_MainWindow(QMainWindow):
         self.checkBox_balloon.setObjectName("checkBox_balloon")
         self.verticalLayout_military.addWidget(self.checkBox_balloon)
         
-        # Live Webcam 공간 부분
+        '''Live Webcam 공간 부분'''
         self.box_webcam = QtWidgets.QGroupBox(self.centralwidget)
         self.box_webcam.setGeometry(QtCore.QRect(320, 30, 771, 491))
         font = QtGui.QFont()
@@ -136,7 +145,7 @@ class Ui_MainWindow(QMainWindow):
         self.box_webcam.setFont(font)
         self.box_webcam.setObjectName("box_webcam")
 
-        # 실제 카메라 화면 출력 부분
+        '''실제 카메라 화면 출력 부분'''
         self.frame = QCameraViewfinder(self.box_webcam)
         self.frame.setGeometry(QtCore.QRect(10, 30, 751, 451))
         # self.frame.setFrameShape(QtWidgets.StyledPanel)
@@ -165,7 +174,7 @@ class Ui_MainWindow(QMainWindow):
         font.setBold(False)
         font.setWeight(50)
 
-
+        '''이메일 버튼 클릭'''
         self.pushButton_email.setFont(font)
         self.pushButton_email.setObjectName("pushButton_email")
         self.horizontalLayout_email.addWidget(self.pushButton_email)
@@ -195,9 +204,13 @@ class Ui_MainWindow(QMainWindow):
         font.setFamily("Yu Gothic UI Semilight")
         font.setBold(False)
         font.setWeight(50)
+
+        '''Database버튼 클릭'''
         self.pushButton_database.setFont(font)
         self.pushButton_database.setObjectName("pushButton_database")
         self.horizontalLayout_database.addWidget(self.pushButton_database)
+        self.pushButton_database.clicked.connect(self.db_clicked)
+
         spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_database.addItem(spacerItem3)
         self.box_data = QtWidgets.QGroupBox(self.centralwidget)
@@ -221,9 +234,13 @@ class Ui_MainWindow(QMainWindow):
         font.setFamily("Yu Gothic UI Semilight")
         font.setBold(False)
         font.setWeight(50)
+
+        '''Data Analysis(BI)버튼 클릭'''
         self.pushButton_data.setFont(font)
         self.pushButton_data.setObjectName("pushButton_data")
         self.horizontalLayout_data.addWidget(self.pushButton_data)
+        self.pushButton_data.clicked.connect(self.bi_clicked)
+
         spacerItem5 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_data.addItem(spacerItem5)
         self.horizontalLayoutWidget_2 = QtWidgets.QWidget(self.centralwidget)
@@ -341,7 +358,6 @@ class Ui_MainWindow(QMainWindow):
         MainWindow.setTabOrder(self.pushButton_save, self.horizontalSlider)
         MainWindow.setTabOrder(self.horizontalSlider, self.pushButton_exit)
 
-
     '''컴퓨터에 연결된 카메라가 있는지 없는지 판정하는 함수'''
     def camera_mode(self) : 
         self.available_cameras = QCameraInfo.availableCameras()
@@ -367,27 +383,30 @@ class Ui_MainWindow(QMainWindow):
         self.select_camera(0) # 0번이 노트북에 연결된 웹캠이며, 이 부분 빠지면 마찬가지로 on 버튼 누르자마자 프로그램 종료됨
         self.frame.show()
     
-    '''이메일 버튼 클릭시 이메일로 이동'''
+    '''이메일 버튼 클릭 시 이메일 창으로 이동'''
     def email_clicked(self):
         # self.hide() # 메인윈도우 숨김
         self.second = email_form() 
         self.second.exec() # 두번째 창을 닫을 때 까지 기다림
         # self.show()  
 
-    '''X버튼 누를 시 종료 재확인 메세지'''
-    def closeEvent(self, QCloseEvent): # 오버라이딩 메소드
-        ans = QMessageBox.question(self, "종료 확인","종료하시겠습니까?",
-                    QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+    '''Database 버튼 클릭 시 DB창으로 이동'''
+    def db_clicked(self):
+        # self.hide() # 메인윈도우 숨김
+        self.second = db_form() 
+        self.second.exec() # 두번째 창을 닫을 때 까지 기다림
+        # self.show()  
 
-        if ans == QMessageBox.Yes:
-            QCloseEvent.accept()
-        else:
-            QCloseEvent.ignore()
-
+    '''Data Analysis 버튼 클릭 시 DB창으로 이동'''
+    def bi_clicked(self):
+        # self.hide() # 메인윈도우 숨김
+        self.second = bi_form() 
+        self.second.exec() # 두번째 창을 닫을 때 까지 기다림
+        # self.show()  
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "위험 비행물 탐지 시스템"))
         self.box_cctv.setTitle(_translate("MainWindow", "01. CCTV Mode"))
         self.pushButton_cctv_on.setText(_translate("MainWindow", "on"))
         self.pushButton_cctv_off.setText(_translate("MainWindow", "off"))
@@ -418,8 +437,9 @@ class Ui_MainWindow(QMainWindow):
         self.actionSave.setText(_translate("MainWindow", "Save"))
         self.actionSave.setShortcut(_translate("MainWindow", "Ctrl+S"))
         self.actionPrint.setText(_translate("MainWindow", "Print"))
-        self.actionPrint.setShortcut(_translate("MainWindow", "Ctrl+P"))
+        self.actionPrint.setShortcut(_translate("MainWindow", "Ctrl+P")) 
 
+'''email창 이동을 위한 클래스 추가'''
 class email_form(QDialog,QWidget,form_email):
     def __init__(self):
         super(email_form,self).__init__()
@@ -439,11 +459,66 @@ class email_form(QDialog,QWidget,form_email):
         else:
             QCloseEvent.ignore() 
 
+
+'''Database창 이동을 위한 클래스 추가'''
+class db_form(QDialog,QWidget,form_db):
+    def __init__(self):
+        super(db_form,self).__init__()
+        self.initUi()
+        self.show()
+
+    def initUi(self):
+        self.setupUi(self)
+
+    '''X버튼 누를 시 종료 재확인 메세지'''
+    def closeEvent(self, QCloseEvent): # 오버라이딩 메소드
+        ans = QMessageBox.question(self, "종료 확인","종료하시겠습니까?",
+                    QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+
+        if ans == QMessageBox.Yes:
+            QCloseEvent.accept()
+        else:
+            QCloseEvent.ignore() 
+
+
+'''Data Analysis창 이동을 위한 클래스 추가'''
+class bi_form(QDialog,QWidget,form_bi):
+    def __init__(self):
+        super(bi_form,self).__init__()
+        self.initUi()
+        self.show()
+
+    def initUi(self):
+        self.setupUi(self)
+
+    '''X버튼 누를 시 종료 재확인 메세지'''
+    def closeEvent(self, QCloseEvent): # 오버라이딩 메소드
+        ans = QMessageBox.question(self, "종료 확인","종료하시겠습니까?",
+                    QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+
+        if ans == QMessageBox.Yes:
+            QCloseEvent.accept()
+        else:
+            QCloseEvent.ignore() 
+
+'''X버튼 누를 시 종료 재확인 메세지'''
+def closeEvent(self, QCloseEvent): # 오버라이딩 메소드
+    ans = QMessageBox.question(self, "종료 확인","종료하시겠습니까?",
+                QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+
+    if ans == QMessageBox.Yes:
+        QCloseEvent.accept()
+    else:
+        QCloseEvent.ignore()
+
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
+    '''상태표시줄'''
+    MainWindow.statusBar()
+    MainWindow.statusBar().showMessage("위험 비행물 탐지 시스템 동작합니다.")
     MainWindow.show()
     sys.exit(app.exec_())
