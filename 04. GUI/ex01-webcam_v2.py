@@ -114,7 +114,7 @@ class Ui_MainWindow(QMainWindow, form_class):
             QCloseEvent.ignore()
 
 
-'''email창 이동을 위한 클래스 추가'''
+'''email창 클래스 추가'''
 class email_form(QDialog,QWidget,form_email):
     def __init__(self):
         super(email_form,self).__init__()
@@ -123,6 +123,33 @@ class email_form(QDialog,QWidget,form_email):
 
     def initUi(self):
         self.setupUi(self)
+
+
+
+    '''info 입력/검색/삭제 부분 업데이트 중'''
+####################################################################
+    def reset(self):
+        self.name_text.clear()
+        self.id_text.clear()
+        self.email_text.clear()  
+
+    def add_info(self):
+
+        row = self.info_table.rowCount()
+        self.info_table.insertRow(row)
+        self.info_table.setItem(row, 0, QTableWidgetItem(
+            self.name_text.text().strip())
+        )
+        self.info_table.setItem(
+            row, 1, QTableWidgetItem(self.id_text.text())
+        )
+        self.info_table.setItem(
+            row, 2, QTableWidgetItem(self.email_text.text())
+        )
+
+        self.reset()
+
+######################################################################
 
     '''X버튼 누를 시 종료 재확인 메세지'''
     def closeEvent(self, QCloseEvent): # 오버라이딩 메소드
@@ -135,7 +162,7 @@ class email_form(QDialog,QWidget,form_email):
             QCloseEvent.ignore() 
 
 
-'''Database창 이동을 위한 클래스 추가'''
+'''Database창 클래스 추가'''
 class db_form(QDialog,QWidget,form_db):
     def __init__(self):
         super(db_form,self).__init__()
@@ -156,7 +183,7 @@ class db_form(QDialog,QWidget,form_db):
             QCloseEvent.ignore() 
 
 
-'''Data Analysis창 이동을 위한 클래스 추가'''
+'''Data Analysis창 클래스 추가'''
 class bi_form(QDialog,QWidget,form_bi):
     def __init__(self):
         super(bi_form,self).__init__()
