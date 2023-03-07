@@ -719,8 +719,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton_data</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>bi_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>155</x>
+     <y>514</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>224</x>
+     <y>585</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>email_clicked()</slot>
+  <slot>bi_clicked()</slot>
  </slots>
 </ui>
