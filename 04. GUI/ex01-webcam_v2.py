@@ -1,5 +1,3 @@
-import os
-import sys
 import cv2, threading, sys, numpy as np, torch, time, argparse, os, glob
 from torch import *
 from PyQt5 import QtWidgets, QtCore, QtGui, QtMultimedia, QtMultimediaWidgets, uic
@@ -10,6 +8,10 @@ from PyQt5.QtMultimedia import *
 from PyQt5.QtMultimediaWidgets import *
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+
 
 def resource_path(relative_path):
     base_path = getattr(sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__)))
@@ -97,10 +99,11 @@ class Ui_MainWindow(QMainWindow, form_class):
 
     '''on 버튼 눌렀을 시 웹캠 시작'''
     def live_webcam_click_on(self) :
-        self.camera_mode() # 이 부분 빠지면 on 버튼 누르자마자 프로그램 종료됨
+        # self.camera_mode() # 이 부분 빠지면 on 버튼 누르자마자 프로그램 종료됨
         QMessageBox.about(self, 'App Alert', '연결된 카메라를 킵니다.')
-        self.select_camera(0) # 0번이 노트북에 연결된 웹캠이며, 이 부분 빠지면 마찬가지로 on 버튼 누르자마자 프로그램 종료됨
+        # self.select_camera(0) # 0번이 노트북에 연결된 웹캠이며, 이 부분 빠지면 마찬가지로 on 버튼 누르자마자 프로그램 종료됨
         self.frame.show()
+        from yolov8_tracking import track # 본 스크립트 파일이랑 동일한 단에 태윤님이 공유해준 yolov8_tracking 폴더 들어가면 동작
 
 
     '''X버튼 누를 시 종료 재확인 메세지'''
