@@ -233,18 +233,27 @@ class email_form(QDialog,QWidget,form_email):
 
         ## 3. 삭제
         elif fn_type == ' DELETE':
-            # 3개의 데이터 중 하나만이라도 존재하면
-            if id and name and email:
-                set_flag = DeleteData(
-                    id    = id, 
-                    name  = name,
-                    email = email,
-                    table_name= TABLE_CUSTOMER)
-            ## 이 부분에 팝업창 필요 !!!
-            else:
-                QMessageBox.critical(self, "입력 오류", "정보를 다시 입력해주세요!")
-                print("정보를 다시 입력해주세요!")
+            msg = '삭제하시겠습니까?'
+            buttonReply = QMessageBox.question(self, '삭제', msg, QMessageBox.Yes | QMessageBox.No)
 
+            # 삭제 메세지에서 YES선택 시
+            if buttonReply == QMessageBox.Yes:
+                # 3개의 데이터 중 하나만이라도 존재하면
+                if id and name and email:
+                    set_flag = DeleteData(
+                        id    = id, 
+                        name  = name,
+                        email = email,
+                        table_name= TABLE_CUSTOMER)
+                ## 이 부분에 팝업창 필요 !!!
+                else:
+                    QMessageBox.critical(self, "입력 오류", "정보를 다시 입력해주세요!")
+                    print("정보를 다시 입력해주세요!")
+                    
+            else: 
+                buttonReply == QMessageBox.No
+                QMessageBox.critical(self, "취소", "취소되었습니다!")
+                print('취소')
         ## info table에 입력할 데이터
         if set_flag:
             if fn_type == ' DELETE' or fn_type == ' INSERT':
