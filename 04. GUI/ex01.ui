@@ -48,6 +48,7 @@
         <property name="font">
          <font>
           <family>Yu Gothic UI Semilight</family>
+          <pointsize>9</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
@@ -71,6 +72,7 @@
         <property name="font">
          <font>
           <family>Yu Gothic UI Semilight</family>
+          <pointsize>9</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
@@ -275,6 +277,7 @@
         <property name="font">
          <font>
           <family>Yu Gothic UI Semilight</family>
+          <pointsize>9</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
@@ -300,7 +303,7 @@
      </layout>
     </widget>
    </widget>
-   <widget class="QGroupBox" name="box_database">
+   <widget class="QGroupBox" name="box_data">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -317,79 +320,7 @@
      </font>
     </property>
     <property name="title">
-     <string>03. Database</string>
-    </property>
-    <widget class="QWidget" name="horizontalLayoutWidget_4">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>20</y>
-       <width>251</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_database">
-      <item>
-       <spacer name="horizontalSpacer_4">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_database">
-        <property name="font">
-         <font>
-          <family>Yu Gothic UI Semilight</family>
-          <weight>50</weight>
-          <bold>false</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Start</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-    </widget>
-   </widget>
-   <widget class="QGroupBox" name="box_data">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>440</y>
-      <width>271</width>
-      <height>80</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Yu Gothic UI Semibold</family>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="title">
-     <string>04. Data Analysis</string>
+     <string>03. Data Analysis</string>
     </property>
     <widget class="QWidget" name="horizontalLayoutWidget_5">
      <property name="geometry">
@@ -419,6 +350,7 @@
         <property name="font">
          <font>
           <family>Yu Gothic UI Semilight</family>
+          <pointsize>9</pointsize>
           <weight>50</weight>
           <bold>false</bold>
          </font>
@@ -646,8 +578,8 @@
   <tabstop>checkBox_bird</tabstop>
   <tabstop>checkBox_balloon</tabstop>
   <tabstop>pushButton_email</tabstop>
-  <tabstop>pushButton_database</tabstop>
   <tabstop>pushButton_data</tabstop>
+  <tabstop>pushButton_capture</tabstop>
   <tabstop>pushButton_save</tabstop>
   <tabstop>horizontalSlider</tabstop>
   <tabstop>pushButton_exit</tabstop>
