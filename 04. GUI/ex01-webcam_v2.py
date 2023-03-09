@@ -131,31 +131,23 @@ class Ui_MainWindow(QMainWindow, form_class):
         # self.second.exec() # 두번째 창을 닫을 때 까지 기다림
         # self.show() 
 
-    '''컴퓨터에 연결된 카메라가 있는지 없는지 판정하는 함수'''
-    def camera_mode(self) : 
+    '''on 버튼 눌렀을 시 웹캠 시작'''
+    def live_webcam_click_on(self, i) :
         self.available_cameras = QCameraInfo.availableCameras()
         if not self.available_cameras :
             sys.exit() # 연결된 카메라 없으면 종료
-
-    '''컴퓨터에 연결된 카메라 중 index를 주어 i번 카메라 선택하는 함수'''
-    def select_camera(self, i) :
         self.camera = QCamera(self.available_cameras[i])
-        self.camera.setViewfinder(self.frame) # 이 부분 빠지면 웹캠 화면 안 나오는 거 확인됨
+        self.camera.setViewfinder(self.frame)
         self.camera.start()
+        QMessageBox.about(self, 'App Alert', '연결된 카메라를 킵니다.')
+        # import yolov8_tracking.track as track
+        self.frame.show()
 
     '''off 버튼 눌렀을 시 웹캠 종료'''
     def live_webcam_click_off(self) :
         self.frame.hide() # 정확히는 숨김 처리 --> 노트북에 웹캠 불은 들어오고 있는 거 확인됨
         QMessageBox.about(self, 'App Alert', '연결된 카메라를 끕니다.')        
         
-
-    '''on 버튼 눌렀을 시 웹캠 시작'''
-    def live_webcam_click_on(self) :
-        self.camera_mode() # 이 부분 빠지면 on 버튼 누르자마자 프로그램 종료됨
-        QMessageBox.about(self, 'App Alert', '연결된 카메라를 킵니다.')
-        self.select_camera(0) # 0번이 노트북에 연결된 웹캠이며, 이 부분 빠지면 마찬가지로 on 버튼 누르자마자 프로그램 종료됨
-        self.frame.show()
-
 
     '''X버튼 누를 시 종료 재확인 메세지'''
     def closeEvent(self, QCloseEvent): # 오버라이딩 메소드
