@@ -117,19 +117,6 @@ class Ui_MainWindow(QMainWindow, form_class):
         # self.frame.setFrameShadow(QtWidgets.Raised)
         self.frame.setObjectName("frame")
 
-    ''' email버튼 클릭 시 이메일 창 활성화'''    
-    def email_clicked(self):
-        # self.hide() # 메인윈도우 숨김
-        self.second = email_form()
-        self.second.exec() # 두번째 창을 닫을 때 까지 기다림
-        self.show() 
-
-    '''Data Analysis 버튼 클릭 시 DB창으로 이동'''
-    def bi_clicked(self):
-        # self.hide() # 메인윈도우 숨김
-        self.second = connect_powerbi() 
-        # self.second.exec() # 두번째 창을 닫을 때 까지 기다림
-        # self.show() 
 
     '''on 버튼 눌렀을 시 웹캠 시작'''
     def live_webcam_click_on(self, i) :
@@ -145,10 +132,9 @@ class Ui_MainWindow(QMainWindow, form_class):
 
     '''off 버튼 눌렀을 시 웹캠 종료'''
     def live_webcam_click_off(self) :
-        self.frame.hide() # 정확히는 숨김 처리 --> 노트북에 웹캠 불은 들어오고 있는 거 확인됨
-        QMessageBox.about(self, 'App Alert', '연결된 카메라를 끕니다.')        
+        QMessageBox.about(self, 'App Alert', '연결된 카메라를 끕니다.')
+        self.frame.hide() # 정확히는 숨김 처리 --> 노트북에 웹캠 불은 들어오고 있는 거 확인됨 
         
-
     '''X버튼 누를 시 종료 재확인 메세지'''
     def closeEvent(self, QCloseEvent): # 오버라이딩 메소드
         ans = QMessageBox.question(self, "종료 확인","종료하시겠습니까?",
@@ -159,6 +145,20 @@ class Ui_MainWindow(QMainWindow, form_class):
         else:
             QCloseEvent.ignore()
 
+
+    ''' email버튼 클릭 시 이메일 창 활성화'''    
+    def email_clicked(self):
+        # self.hide() # 메인윈도우 숨김
+        self.second = email_form()
+        self.second.exec() # 두번째 창을 닫을 때 까지 기다림
+        self.show() 
+
+    '''Data Analysis 버튼 클릭 시 DB창으로 이동'''
+    def bi_clicked(self):
+        # self.hide() # 메인윈도우 숨김
+        self.second = connect_powerbi() 
+        # self.second.exec() # 두번째 창을 닫을 때 까지 기다림
+        # self.show() 
 
 '''email창 클래스 추가'''
 class email_form(QDialog,QWidget,form_email):
