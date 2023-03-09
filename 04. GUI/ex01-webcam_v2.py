@@ -10,72 +10,11 @@ from PyQt5.QtMultimedia import *
 from PyQt5.QtMultimediaWidgets import *
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
-
 from important_data import *
-'''4번 버튼 클릭 시 연결'''
-def connect_powerbi():
-    import webbrowser
-    webbrowser.open(POWER_BI_LINK)
+import qdarktheme
+from qt_material import list_themes
+from qt_material import apply_stylesheet
 
-'''CUSTOMER_TABLE 연결'''
-def connect_table():
-    from mysql.connector import connection
-    conn = connection.MySQLConnection(
-        user     = USER,
-        password = PASSWORD,
-        host     = HOST,
-        database = DATABASE
-        )
-    return conn
-
-## 2번 버튼 ####################################################
-
-''' Select Data'''
-def SelectData(id= None, name= None, email= None, table_name= None):
-    id_list, name_list, email_list = [], [], []
-
-    conn = connect_table()
-    cur = conn.cursor()
-    SQL_SELECT = f'''SELECT * FROM `{table_name}`
-    WHERE `id` = '{str(id)}' OR `name`='{str(name)}' OR `email`='{str(email)}';'''
-    cur.execute(SQL_SELECT)
-    result = cur.fetchall()
-    for i in result:
-        id_list.append(i[1])
-        name_list.append(i[2])
-        email_list.append(i[3])
-    conn.commit()
-    conn.close()
-
-    return id_list, name_list, email_list
-
-''' Insert Data'''
-def InsertData(id= None, name= None, email= None, table_name= None):
-    conn = connect_table()
-    cur = conn.cursor()
-    SQL_INSERT = f'''INSERT INTO `{table_name}`(id, name, email) 
-VALUES ('{str(id)}', '{str(name)}', '{str(email)}');'''
-    cur.execute(SQL_INSERT)
-    conn.commit()
-    conn.close()
-    
-''' Delete Data'''
-def DeleteData(id= None, name= None, email= None, table_name= None):
-    conn = connect_table()
-    cur = conn.cursor()
-    SQL_DELETE = f'''DELETE FROM `{table_name}` WHERE `id` = '{str(id)}' AND `name`='{str(name)}' AND `email`='{str(email)}';'''
-    cur.execute(SQL_DELETE)
-    conn.commit()
-    if cur.rowcount >= 1:
-        conn.close()
-        return True
-    else:
-        conn.close()
-        return False    
-
-# WHERE  `id`='2' AND `name`='1' AND `email`='3' LIMIT 1;
-
-####################################################################
 
 def resource_path(relative_path):
     base_path = getattr(sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__)))
@@ -90,11 +29,54 @@ form_class = uic.loadUiType(form)[0]
 form_2 = resource_path('ex02_email.ui')
 form_email = uic.loadUiType(form_2)[0]
 
+
+# 버튼 색상 및 폰트
+extra = {
+
+    # Button colors
+    'danger': '#dc3545',
+    'warning': '#ffc107',
+    'success': '#17a2b8',
+
+    # Font
+    'font_family': 'Roboto',
+}
+
+# Ui 디자인 작업 중
 class Ui_MainWindow(QMainWindow, form_class):
     def __init__(self):
         super().__init__()
+        '''Ui 디자인'''
+        # apply_stylesheet(app, theme='dark_purple.xml') # 검은색 테마
+        # qdarktheme.setup_theme("light")  # 밝은색 테마
+        apply_stylesheet(app, theme='dark_purple.xml', extra=extra) # 검은색 테마 + 버튼 색상 + 폰트
+        # apply_stylesheet(app, 'light_cyan.xml', invert_secondary=True, extra=extra) # 밝은색 테마 + 버튼 색상 + 폰트
+        # stylesheet = qdarktheme.setup_theme(corner_shape="sharp") # 버튼 모양 각지게
+        # qdarktheme.setup_theme("auto") # os테마와 동기화
+
+        # dark_palette = qdarktheme.load_palette()
+        # link_color = dark_palette.link().color()
+        # link_rgb = link_color.getRgb()
+        # app.setPalette(qdarktheme.load_palette())
+
         self.setupUi(self)
-        
+        ''' 버튼 아이콘 '''
+        # save
+        myWindow = QMainWindow()
+        save_pixmap = QStyle.StandardPixmap.SP_DialogSaveButton
+        save_icon = myWindow.style().standardIcon(save_pixmap)
+        self.pushButton_save.setIcon(save_icon)
+
+        # capture
+        capture_pixmap = QStyle.StandardPixmap.SP_DialogApplyButton
+        capture_icon = myWindow.style().standardIcon(capture_pixmap)
+        self.pushButton_capture.setIcon(capture_icon)
+
+        # exit
+        exit_pixmap = QStyle.StandardPixmap.SP_MessageBoxCritical
+        exit_icon = myWindow.style().standardIcon(exit_pixmap)
+        self.pushButton_exit.setIcon(exit_icon)
+
         ''' 웹캠 동작(종료)시키는 클릭 이벤트 처리 연결'''
         self.pushButton_cctv_on.clicked.connect(self.live_webcam_click_on)  # 동작
         self.pushButton_cctv_off.clicked.connect(self.live_webcam_click_off) # 종료 
@@ -146,6 +128,7 @@ class Ui_MainWindow(QMainWindow, form_class):
             QCloseEvent.ignore()
 
 
+    # 2번 버튼
     ''' email버튼 클릭 시 이메일 창 활성화'''    
     def email_clicked(self):
         # self.hide() # 메인윈도우 숨김
@@ -153,6 +136,7 @@ class Ui_MainWindow(QMainWindow, form_class):
         self.second.exec() # 두번째 창을 닫을 때 까지 기다림
         self.show() 
 
+    # 3번 버튼
     '''Data Analysis 버튼 클릭 시 DB창으로 이동'''
     def bi_clicked(self):
         # self.hide() # 메인윈도우 숨김
@@ -160,17 +144,90 @@ class Ui_MainWindow(QMainWindow, form_class):
         # self.second.exec() # 두번째 창을 닫을 때 까지 기다림
         # self.show() 
 
-'''email창 클래스 추가'''
+## 2번 버튼 ####
+
+'''CUSTOMER_TABLE 연결'''
+def connect_table():
+    from mysql.connector import connection
+    conn = connection.MySQLConnection(
+        user     = USER,
+        password = PASSWORD,
+        host     = HOST,
+        database = DATABASE
+        )
+    return conn
+
+
+''' Select Data'''
+def SelectData(id= None, name= None, email= None, table_name= None):
+    id_list, name_list, email_list = [], [], []
+
+    conn = connect_table()
+    cur = conn.cursor()
+    SQL_SELECT = f'''SELECT * FROM `{table_name}`
+    WHERE `id` = '{str(id)}' OR `name`='{str(name)}' OR `email`='{str(email)}';'''
+    cur.execute(SQL_SELECT)
+    result = cur.fetchall()
+    for i in result:
+        id_list.append(i[1])
+        name_list.append(i[2])
+        email_list.append(i[3])
+    conn.commit()
+    conn.close()
+
+    return id_list, name_list, email_list
+
+''' Insert Data'''
+def InsertData(id= None, name= None, email= None, table_name= None):
+    conn = connect_table()
+    cur = conn.cursor()
+    SQL_INSERT = f'''INSERT INTO `{table_name}`(id, name, email) 
+VALUES ('{str(id)}', '{str(name)}', '{str(email)}');'''
+    cur.execute(SQL_INSERT)
+    conn.commit()
+    conn.close()
+    
+''' Delete Data'''
+def DeleteData(id= None, name= None, email= None, table_name= None):
+    conn = connect_table()
+    cur = conn.cursor()
+    SQL_DELETE = f'''DELETE FROM `{table_name}` WHERE `id` = '{str(id)}' AND `name`='{str(name)}' AND `email`='{str(email)}';'''
+    cur.execute(SQL_DELETE)
+    conn.commit()
+    if cur.rowcount >= 1:
+        conn.close()
+        return True
+    else:
+        conn.close()
+        return False    
+
+# WHERE  `id`='2' AND `name`='1' AND `email`='3' LIMIT 1;
+
+####################################################################
+
+'''2번 버튼, email 클래스 추가'''
 class email_form(QDialog,QWidget,form_email):
     def __init__(self):
         super(email_form,self).__init__()
         self.initUi()
         self.show()
-        print(self.info_comboBox.currentText())
+        print(self.info_comboBox.currentText(), '모드 입니다.')
         self.info_comboBox.currentIndexChanged.connect(self.printShtname)
+
 
     def initUi(self):
         self.setupUi(self)
+        '''버튼 아이콘'''
+        # enter
+        capture_pixmap = QStyle.StandardPixmap.SP_DialogApplyButton
+        capture_icon = myWindow.style().standardIcon(capture_pixmap)
+        self.enter_pushButton.setIcon(capture_icon)
+
+        # exit
+        exit_pixmap = QStyle.StandardPixmap.SP_MessageBoxCritical
+        exit_icon = myWindow.style().standardIcon(exit_pixmap)
+        self.exit_pushButton.setIcon(exit_icon)
+        
 
     '''info 입력/검색/삭제 부분 업데이트 중'''
 ####################################################################
@@ -180,7 +237,7 @@ class email_form(QDialog,QWidget,form_email):
         self.email_text.clear()  
 
     def printShtname(self): # 콤보박스 상태 변경 시 터미널에 출력하는 기능 함수.
-        print(self.info_comboBox.currentText())
+        print(self.info_comboBox.currentText(),'모드 입니다.')
 
     def add_info(self):
         set_flag = False
@@ -277,6 +334,13 @@ class email_form(QDialog,QWidget,form_email):
         else:
             QCloseEvent.ignore() 
 
+
+'''3번 버튼 클릭 시 연결'''
+def connect_powerbi():
+    import webbrowser
+    webbrowser.open(POWER_BI_LINK)
+
+
 '''Data Analysis창 클래스 추가'''
 class bi_form(QDialog,QWidget):
     def __init__(self):
@@ -306,3 +370,4 @@ if __name__ == '__main__':
     myWindow.statusBar()
     myWindow.statusBar().showMessage("위험 비행물 감지 시스템 동작합니다.")
     app.exec_()
+
