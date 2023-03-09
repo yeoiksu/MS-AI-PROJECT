@@ -1,0 +1,7 @@
+POWER_BI_LINK = "https://app.powerbi.com/reportEmbed?reportId=3110bb7a-f8be-462f-b05f-225b79029834&autoAuth=true&ctid=dfe18bca-714d-40b8-9c3d-89ac9edc2097"
+USER     = "bbongs"
+PASSWORD = "Qweasd123$"
+HOST     = "219.251.99.114"
+DATABASE = "drone_project"
+TABLE_CUSTOMER = "customer"
+TABLE_WEBCAM =  "webcam"

@@ -6,21 +6,37 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1155</width>
-    <height>723</height>
+    <width>1015</width>
+    <height>558</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Info</string>
   </property>
+  <property name="toolTipDuration">
+   <number>-1</number>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
   <widget class="QGroupBox" name="info_output_groupBox">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>50</y>
-     <width>761</width>
-     <height>581</height>
+     <x>20</x>
+     <y>20</y>
+     <width>601</width>
+     <height>521</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Yu Gothic UI Semibold</family>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="toolTipDuration">
+    <number>1</number>
    </property>
    <property name="title">
     <string>INFO_OUTPUT</string>
@@ -28,11 +44,19 @@
    <widget class="QTableWidget" name="info_table">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>20</y>
-      <width>731</width>
-      <height>541</height>
+      <x>20</x>
+      <y>30</y>
+      <width>561</width>
+      <height>471</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Yu Gothic UI</family>
+      <pointsize>9</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
     </property>
     <property name="sizeAdjustPolicy">
      <enum>QAbstractScrollArea::AdjustToContents</enum>
@@ -57,17 +81,22 @@
     </property>
     <column>
      <property name="text">
-      <string>아이디</string>
+      <string>Function</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>이름</string>
+      <string>I  D</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>이메일</string>
+      <string>Name</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Email</string>
      </property>
     </column>
    </widget>
@@ -75,125 +104,334 @@
   <widget class="QGroupBox" name="info_groupBox">
    <property name="geometry">
     <rect>
-     <x>800</x>
-     <y>50</y>
-     <width>321</width>
-     <height>581</height>
+     <x>640</x>
+     <y>210</y>
+     <width>361</width>
+     <height>331</height>
     </rect>
    </property>
-   <property name="title">
-    <string>INFO</string>
+   <property name="font">
+    <font>
+     <family>Yu Gothic UI Semibold</family>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
    </property>
+   <property name="title">
+    <string>INFO_INPUT</string>
+   </property>
+   <widget class="QComboBox" name="info_comboBox">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>50</y>
+      <width>91</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Yu Gothic UI</family>
+      <pointsize>9</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="contextMenuPolicy">
+     <enum>Qt::DefaultContextMenu</enum>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <item>
+     <property name="text">
+      <string> INSERT</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string> SELECT</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string> DELETE</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QPushButton" name="enter_pushButton">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>280</y>
+      <width>91</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Yu Gothic UI</family>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Enter</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>pics/edit.png</normaloff>pics/edit.png</iconset>
+    </property>
+    <property name="default">
+     <bool>false</bool>
+    </property>
+   </widget>
    <widget class="QPushButton" name="exit_pushButton">
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>540</y>
+      <x>180</x>
+      <y>280</y>
       <width>93</width>
       <height>28</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Yu Gothic UI</family>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
     <property name="text">
-     <string>종료</string>
+     <string>Exit</string>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>pics/exit.png</normaloff>pics/exit.png</iconset>
     </property>
    </widget>
    <widget class="QLabel" name="id_label">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>260</y>
-      <width>45</width>
+      <y>110</y>
+      <width>71</width>
       <height>16</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Yu Gothic UI Semibold</family>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
     <property name="text">
-     <string>이름</string>
+     <string>2. I  D</string>
     </property>
    </widget>
    <widget class="QLabel" name="email_label">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>360</y>
-      <width>45</width>
+      <y>230</y>
+      <width>71</width>
       <height>16</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Yu Gothic UI Semibold</family>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
     <property name="text">
-     <string>이메일</string>
+     <string>4. EMAIL</string>
     </property>
    </widget>
    <widget class="QLabel" name="name_label">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>160</y>
-      <width>51</width>
+      <y>170</y>
+      <width>71</width>
       <height>16</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Yu Gothic UI Semibold</family>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
     <property name="text">
-     <string>아이디</string>
+     <string>3. NAME</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="name_text">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>150</y>
+      <x>100</x>
+      <y>160</y>
       <width>211</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Yu Gothic UI</family>
+      <pointsize>9</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
     </property>
    </widget>
    <widget class="QLineEdit" name="id_text">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>250</y>
+      <x>100</x>
+      <y>100</y>
       <width>211</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Yu Gothic UI</family>
+      <pointsize>9</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
     </property>
    </widget>
    <widget class="QLineEdit" name="email_text">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>350</y>
+      <x>100</x>
+      <y>220</y>
       <width>211</width>
       <height>31</height>
      </rect>
     </property>
-   </widget>
-   <widget class="QPushButton" name="search_pushButton">
-    <property name="geometry">
-     <rect>
-      <x>130</x>
-      <y>400</y>
-      <width>51</width>
-      <height>28</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>조회</string>
+    <property name="font">
+     <font>
+      <family>Yu Gothic UI</family>
+      <pointsize>9</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
     </property>
    </widget>
-   <widget class="QPushButton" name="add_pushButton">
+   <widget class="QLabel" name="function_label">
     <property name="geometry">
      <rect>
-      <x>60</x>
-      <y>400</y>
-      <width>51</width>
-      <height>28</height>
+      <x>10</x>
+      <y>60</y>
+      <width>81</width>
+      <height>16</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Yu Gothic UI Semibold</family>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
     <property name="text">
-     <string>추가</string>
+     <string>1. Function</string>
     </property>
    </widget>
   </widget>
+  <widget class="QGroupBox" name="function_groupBox">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>20</y>
+     <width>351</width>
+     <height>181</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Yu Gothic UI Semibold</family>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="title">
+    <string>FUNCTION</string>
+   </property>
+   <widget class="QWidget" name="verticalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>30</y>
+      <width>311</width>
+      <height>143</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="select_label">
+       <property name="font">
+        <font>
+         <family>Yu Gothic UI</family>
+         <pointsize>9</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Select : Type at least one item to search data</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="insert_label">
+       <property name="font">
+        <font>
+         <family>Yu Gothic UI</family>
+         <pointsize>9</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Insert : Type all items to insert data to DB</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="delete_label">
+       <property name="font">
+        <font>
+         <family>Yu Gothic UI</family>
+         <pointsize>9</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Delete : Type all items to delete data from DB</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
  </widget>
+ <tabstops>
+  <tabstop>info_table</tabstop>
+  <tabstop>info_comboBox</tabstop>
+  <tabstop>id_text</tabstop>
+  <tabstop>name_text</tabstop>
+  <tabstop>email_text</tabstop>
+  <tabstop>enter_pushButton</tabstop>
+  <tabstop>exit_pushButton</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -213,18 +451,18 @@
    </hints>
   </connection>
   <connection>
-   <sender>add_pushButton</sender>
+   <sender>enter_pushButton</sender>
    <signal>clicked()</signal>
    <receiver>Form</receiver>
    <slot>add_info()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>901</x>
-     <y>517</y>
+     <x>839</x>
+     <y>469</y>
     </hint>
     <hint type="destinationlabel">
-     <x>511</x>
-     <y>660</y>
+     <x>566</x>
+     <y>643</y>
     </hint>
    </hints>
   </connection>
