@@ -1,5 +1,3 @@
-import os
-import sys
 import cv2, threading, sys, numpy as np, torch, time, argparse, os, glob
 from torch import *
 from PyQt5 import QtWidgets, QtCore, QtGui, QtMultimedia, QtMultimediaWidgets, uic
@@ -14,7 +12,11 @@ from important_data import *
 import qdarktheme
 from qt_material import list_themes
 from qt_material import apply_stylesheet
+from mysql.connector.locales.eng import client_error
+# from yolov8_tracking_V4 import track
 
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))
 
 def resource_path(relative_path):
     base_path = getattr(sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__)))
@@ -32,12 +34,10 @@ form_email = uic.loadUiType(form_2)[0]
 
 # 버튼 색상 및 폰트
 extra = {
-
     # Button colors
     'danger': '#dc3545',
     'warning': '#ffc107',
     'success': '#17a2b8',
-
     # Font
     'font_family': 'Roboto',
 }
@@ -49,73 +49,72 @@ class Ui_MainWindow(QMainWindow, form_class):
         '''Ui 디자인'''
         # apply_stylesheet(app, theme='dark_purple.xml') # 검은색 테마
         # qdarktheme.setup_theme("light")  # 밝은색 테마
-        apply_stylesheet(app, theme='dark_purple.xml', extra=extra) # 검은색 테마 + 버튼 색상 + 폰트
+        # apply_stylesheet(app, theme='dark_purple.xml', extra=extra) # 검은색 테마 + 버튼 색상 + 폰트
         # apply_stylesheet(app, 'light_cyan.xml', invert_secondary=True, extra=extra) # 밝은색 테마 + 버튼 색상 + 폰트
         # stylesheet = qdarktheme.setup_theme(corner_shape="sharp") # 버튼 모양 각지게
         # qdarktheme.setup_theme("auto") # os테마와 동기화
-
+        back_Image = QImage("pics/background.png")
+        size_Image = back_Image.scaled(QSize(1111, 653))
+        palette = QPalette()
+        palette.setBrush(QPalette.Background,QBrush(QPixmap(size_Image))) # <= 원하시는 사진
+        self.setPalette(palette)
         # dark_palette = qdarktheme.load_palette()
         # link_color = dark_palette.link().color()
         # link_rgb = link_color.getRgb()
         # app.setPalette(qdarktheme.load_palette())
-
+        self.date = QDate.currentDate()
         self.setupUi(self)
-        ''' 버튼 아이콘 '''
-        # save
-        myWindow = QMainWindow()
-        save_pixmap = QStyle.StandardPixmap.SP_DialogSaveButton
-        save_icon = myWindow.style().standardIcon(save_pixmap)
-        self.pushButton_save.setIcon(save_icon)
-
-        # capture
-        capture_pixmap = QStyle.StandardPixmap.SP_DialogApplyButton
-        capture_icon = myWindow.style().standardIcon(capture_pixmap)
-        self.pushButton_capture.setIcon(capture_icon)
-
-        # exit
-        exit_pixmap = QStyle.StandardPixmap.SP_MessageBoxCritical
-        exit_icon = myWindow.style().standardIcon(exit_pixmap)
-        self.pushButton_exit.setIcon(exit_icon)
 
         ''' 웹캠 동작(종료)시키는 클릭 이벤트 처리 연결'''
         self.pushButton_cctv_on.clicked.connect(self.live_webcam_click_on)  # 동작
         self.pushButton_cctv_off.clicked.connect(self.live_webcam_click_off) # 종료 
 
-        # '''Live Webcam 공간 부분'''
-        # self.box_webcam = QtWidgets.QGroupBox(self.centralwidget)
-        # self.box_webcam.setGeometry(QtCore.QRect(320, 30, 771, 491))
-        # font = QtGui.QFont()
-        # font.setFamily("Yu Gothic UI Semibold")
-        # font.setPointSize(10)
-        # font.setBold(True)
-        # font.setWeight(75)
-        # self.box_webcam.setFont(font)
-        # self.box_webcam.setObjectName("box_webcam")
+        # '''Live Webcam 공간 부분''' --> 무쓸모로 판명
+        self.box_webcam = QtWidgets.QGroupBox(self.centralwidget)
+        self.box_webcam.setGeometry(QtCore.QRect(320, 50, 770, 500)) # 좌측 상단 X좌표, 좌측 상단 Y좌표, X로부터 우측으로의 거리, Y로부터 아래쪽으로의 거리
+        font = QtGui.QFont()
+        font.setFamily("Yu Gothic UI Semibold")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.box_webcam.setFont(font)
+        self.box_webcam.setObjectName("box_webcam")
 
         ''' 실제 카메라 화면 출력 부분'''
-        self.frame = QCameraViewfinder(self.box_webcam)
-        self.frame.setGeometry(QtCore.QRect(10, 30, 751, 451))
-        # self.frame.setFrameShape(QtWidgets.StyledPanel)
-        # self.frame.setFrameShadow(QtWidgets.Raised)
+        self.frame = QLabel(self.box_webcam)
+        # self.frame.setGeometry(QtCore.QRect(320, 50, 761, 451))
         self.frame.setObjectName("frame")
-
+        # self.camera = None # 필요 없음
+        # self.timer = QTimer() # 필요 없음
+        # self.frame_rate = 60 # 필요 없음
 
     '''on 버튼 눌렀을 시 웹캠 시작'''
-    def live_webcam_click_on(self, i) :
-        self.available_cameras = QCameraInfo.availableCameras()
-        if not self.available_cameras :
-            sys.exit() # 연결된 카메라 없으면 종료
-        self.camera = QCamera(self.available_cameras[i])
-        self.camera.setViewfinder(self.frame)
-        self.camera.start()
-        QMessageBox.about(self, 'App Alert', '연결된 카메라를 킵니다.')
-        # import yolov8_tracking.track as track
+    def live_webcam_click_on(self) :
+        cap = cv2.VideoCapture(0)
         self.frame.show()
+        while True:
+            ret, img = cap.read()
+            if not ret:
+                break
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            h, w, ch = img.shape
+            bytesPerLine = ch * w
+            qImg = QImage(img.data, w, h, bytesPerLine, QImage.Format_RGB888)
+            pixmap = QPixmap.fromImage(qImg)
+            self.frame.setPixmap(pixmap)
+            QtWidgets.QApplication.processEvents()
+            # print(self.frame)
+        cap.release()
+
+
+
 
     '''off 버튼 눌렀을 시 웹캠 종료'''
     def live_webcam_click_off(self) :
+        self.frame.clear() 
         QMessageBox.about(self, 'App Alert', '연결된 카메라를 끕니다.')
-        self.frame.hide() # 정확히는 숨김 처리 --> 노트북에 웹캠 불은 들어오고 있는 거 확인됨 
+        self.frame.hide() # 정확히는 숨김 처리 --> 노트
+
         
     '''X버튼 누를 시 종료 재확인 메세지'''
     def closeEvent(self, QCloseEvent): # 오버라이딩 메소드
@@ -157,26 +156,6 @@ def connect_table():
         )
     return conn
 
-
-'''Count Data'''
-def countData(id= None, name= None, email= None, table_name= None, mode= None):
-    conn = connect_table()
-    cur = conn.cursor()    
-    print("mode", mode)
-    # COUNT 문
-    if mode == " SELECT":
-        SQL_COUNT = f'''SELECT COUNT(*) FROM `{table_name}`
-        WHERE `id` = '{str(id)}' OR `name`='{str(name)}' OR `email`='{str(email)}';'''
-    elif mode == " DELETE":
-        SQL_COUNT = f'''SELECT COUNT(*) FROM `{table_name}`
-        WHERE `id` = '{str(id)}' AND `name`='{str(name)}' AND `email`='{str(email)}';'''
-
-    cur.execute(SQL_COUNT)
-    count = cur.fetchone()[0]
-    conn.commit()
-    conn.close()
-
-    return count
 
 ''' Select Data'''
 def SelectData(id= None, name= None, email= None, table_name= None):
@@ -256,8 +235,8 @@ class email_form(QDialog,QWidget,form_email):
         self.name_text.clear()
         self.email_text.clear()  
 
-    # def printShtname(self): # 콤보박스 상태 변경 시 터미널에 출력하는 기능 함수.
-    #     print(self.info_comboBox.currentText(),'모드 입니다.')
+    def printShtname(self): # 콤보박스 상태 변경 시 터미널에 출력하는 기능 함수.
+        print(self.info_comboBox.currentText(),'모드 입니다.')
 
     def add_info(self):
         set_flag = False
@@ -270,21 +249,20 @@ class email_form(QDialog,QWidget,form_email):
         ## 1. 검색
         if fn_type == ' SELECT':
             if id or name or email:
-                select_count = countData(id, name, email, TABLE_CUSTOMER, fn_type)
-                if select_count > 0 :
-                    set_flag = True
-                    id_list, name_list, email_list = \
-                        SelectData(
-                            id    = id, 
-                            name  = name,
-                            email = email,
-                            table_name= TABLE_CUSTOMER
-                        )
-                    QMessageBox.information(self, "Select 결과", f"{select_count}개의 데이터를 출력합니다.")
-                else:
+                set_flag = True
+                id_list, name_list, email_list = SelectData(
+                    id    = id, 
+                    name  = name,
+                    email = email,
+                    table_name= TABLE_CUSTOMER
+                    )
+                if len(id_list) == 0:
                     QMessageBox.critical(self, "입력 오류", "입력하신 정보의 데이터가 없습니다")
+                    print("입력하신 정보의 데이터가 없습니다")
+            # close event 처럼 하나 필요 !!!
             else:
                 QMessageBox.critical(self, "입력 오류", "정보를 입력해주세요!")
+                print("ID, NAME, EMAIL중에 하나를 입력해주세요")
         
         ## 2. 입력
         elif fn_type == ' INSERT':
@@ -303,30 +281,27 @@ class email_form(QDialog,QWidget,form_email):
 
         ## 3. 삭제
         elif fn_type == ' DELETE':
-            msg = '정말 삭제하시겠습니까?'
+            msg = '삭제하시겠습니까?'
             buttonReply = QMessageBox.question(self, '삭제', msg, QMessageBox.Yes | QMessageBox.No)
 
             # 삭제 메세지에서 YES선택 시
             if buttonReply == QMessageBox.Yes:
                 # 3개의 데이터 중 하나만이라도 존재하면
                 if id and name and email:
-                    delete_count = countData(id, name, email, TABLE_CUSTOMER, fn_type)
-                    # delete할 행이 있다면
-                    if delete_count > 0 :
-                        set_flag = DeleteData(
-                            id    = id, 
-                            name  = name,
-                            email = email,
-                            table_name= TABLE_CUSTOMER)
-                        QMessageBox.information(self, "Delete 결과", f"{delete_count}개의 데이터를 삭제합니다.")
-                    # delete할 행이 없다면
-                    else:
-                        QMessageBox.critical(self, "입력 오류", "입력하신 정보의 데이터가 없습니다.\n데이터를 다시 확인 후 입력해주세요")
+                    set_flag = DeleteData(
+                        id    = id, 
+                        name  = name,
+                        email = email,
+                        table_name= TABLE_CUSTOMER)
+                ## 이 부분에 팝업창 필요 !!!
                 else:
-                    QMessageBox.critical(self, "입력 오류", "정보를 다시 입력해주세요!")     
+                    QMessageBox.critical(self, "입력 오류", "정보를 다시 입력해주세요!")
+                    print("정보를 다시 입력해주세요!")
+                    
             else: 
                 buttonReply == QMessageBox.No
                 QMessageBox.critical(self, "취소", "취소되었습니다!")
+                print('취소')
         ## info table에 입력할 데이터
         if set_flag:
             if fn_type == ' DELETE' or fn_type == ' INSERT':
@@ -385,13 +360,14 @@ class bi_form(QDialog,QWidget):
         else:
             QCloseEvent.ignore() 
 
+    
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     myWindow = Ui_MainWindow()
     myWindow.show()
-    
+
     '''상태표시줄'''
     myWindow.statusBar()
-    myWindow.statusBar().showMessage("위험 비행물 감지 시스템 동작합니다.")
+    myWindow.statusBar().showMessage(myWindow.date.toString(Qt.DefaultLocaleLongDate)+"     [ 위험 비행물 감지 시스템 동작합니다 ]")
+    # myWindow.statusBar().showMessage("위험 비행물 감지 시스템 동작합니다.")
     app.exec_()
-
