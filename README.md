@@ -37,6 +37,5 @@
 ### 3. [Database](#iii-database)
 ### 4. [GUI (PyQt5)](#iv-gui-pyqt5)
 ### 5. [Project Code](#v-project-code)
-### 6. [Presentation](#vi-presentation)
 
 <hr>
