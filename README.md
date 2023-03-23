@@ -1,4 +1,4 @@
-# 위험 비행물 탐지 시스템(Hazardous Flying Detection and Tracking System)
+# 위험 비행물 탐지 시스템(Hazardous Flying Object Detection System)
 - This repo is to record Microsoft AI School Team 2 Project.
 
 
