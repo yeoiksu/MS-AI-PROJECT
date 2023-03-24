@@ -35,7 +35,7 @@
 <hr>
 
 ## IV. Repository Folder
-### 1. [Project Plan](#https://github.com/yeoiksu/MS-AI-PROJECT/tree/main/01.%20Project%20Plan)
+### 1. [Project Plan](/01.%20Project%20Plan/)
 ### 2. [Object Detection Model](#2-object-detection-model)
 ### 3. [Database](#3-database)
 ### 4. [GUI (PyQt5)](#4-gui-pyqt5)
