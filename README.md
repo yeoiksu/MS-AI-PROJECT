@@ -36,9 +36,9 @@
 
 ## IV. Repository Folder
 ### 1. [Project Plan](/01.%20Project%20Plan/)
-### 2. [Object Detection Model](#2-object-detection-model)
-### 3. [Database](#3-database)
-### 4. [GUI (PyQt5)](#4-gui-pyqt5)
-### 5. [Project Code](#5-project-code)
+### 2. [Object Detection Model](/02.%20Object%20Detection/)
+### 3. [Database](/03.%20Database/)
+### 4. [GUI (PyQt5)](/04.%20GUI/)
+### 5. [Project Code](/05.%20Project%20Code/)
 
 <hr>
