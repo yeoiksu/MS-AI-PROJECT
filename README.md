@@ -1,11 +1,11 @@
-# 위험 비행물 탐지 시스템(Hazardous Flying Detection and Tracking System)
+# 위험 비행물 탐지 시스템(Hazardous Flying Object Detection System)
 - This repo is to record Microsoft AI School Team 2 Project.
 
 
 ## I. Summary of Project and Team
 - Microsoft AI School Team 2 Project
 - Schedule : 
-    - Processing : 2023.2.6 ~ 3.22
+    - Processing : 2023.2.21 ~ 3.22
     - A result briefing session : 2023.3.22 | Presentation : http://naver.me/FJ63fjJz
 - Member of Project   
     Team Leader : @yeoiksu | https://github.com/yeoiksu  
@@ -40,6 +40,5 @@
 ### 3. [Database](#iii-database)
 ### 4. [GUI (PyQt5)](#iv-gui-pyqt5)
 ### 5. [Project Code](#v-project-code)
-### 6. [Presentation](#vi-presentation)
 
 <hr>
