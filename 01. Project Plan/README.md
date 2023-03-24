@@ -65,3 +65,20 @@
 <hr>
 
 ## 3주차 (23.03.06 ~ 23.03.10)
+1. 03.06 (MON). 최종 데이터셋 구축 및 군용 드론 이미지 합성 작업(4,200장)
+    - 데이터 현황   
+    ![data0221](/images/0306.png)
+2. 03.07 (TUE). YOLOv8 환경 구축 및 모델 실험
+    - Compare No. of Instances  
+    ![data0221](/images/0307.png)
+3. 03.08 (WED). YOLOv8 모델 실험 및 팀별 프로젝트 진행(Object Tracking / DB / PyQt5 GUI)
+4. 03.09 (THU). YOLOv8 모델 인퍼런스 작성 및 실험 결과 확인
+5. 03.10 (FRI). YOLOv8 모델 문제점 개선(ex. 데이터셋 및 하이퍼파라미터) 후 모델 재실험
+
+<hr>
+
+## 4주차 (23.03.13 ~ 23.03.16)
+1. 03.13 (MON). YOLOv8 모델 인퍼런스 작성 및 실험 결과 확인
+2. 03.14 (TUE). GUI + Database + Object Tracking 연동 작업 1
+3. 03.15 (WED). GUI + Database + Object Tracking 연동 작업 2
+4. 03.16 (THU). 발표 PPT + 스크립트 작성 및 예상 질문 답변 작성
